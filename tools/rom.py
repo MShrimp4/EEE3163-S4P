@@ -106,3 +106,39 @@ sig_list = "\n".join([gen_rom_define(name,data,state_len) for name,data in rom_d
 io_list = "; \n".join([define_io (addr_name,True,minimum_len(state_len))] + [define_io (name, False, length) for name, length in sig_len_dict.items()])
 as_list = "\n".join([gen_code_lookup(addr_name, name, length) for name, length in sig_len_dict.items()])
 print(template.format(ROM_NAME = "uop_rom", IO_LIST = io_list, SIGNAL_LIST = sig_list, ASSIGN_LIST = as_list))
+
+name = ""
+map_list = list()
+with open("map.csv", encoding="UTF-8") as file:
+    csvreader = csv.reader(file)
+    for row in csvreader:
+        if row[0] == "":
+            continue
+        if row[0] == "Address[]":
+            continue
+
+        print(row)
+        name = row[0]
+        temp = [symbol_dict[x] for x in row[1:]]
+        temp.reverse()
+        map_list = temp
+        break
+
+rom_dict = dict()
+sig_len_dict = dict()
+size = minimum_len(state_len)
+state_len = len(map_list)
+lst = [tobit(x, size) for x in map_list]
+for i in range(size):
+    msb_i = size - 1 - i
+    rom_dict[rom_name(name,msb_i)] = "".join([x[i] for x in lst])
+sig_len_dict[name] = size
+        
+
+map_len = len(map_list)
+
+
+sig_list = "\n".join([gen_rom_define(name,data,state_len) for name,data in rom_dict.items()])
+io_list = "; \n".join([define_io (addr_name,True,minimum_len(state_len))] + [define_io (name, False, length) for name, length in sig_len_dict.items()])
+as_list = "\n".join([gen_code_lookup(addr_name, name, length) for name, length in sig_len_dict.items()])
+print(template.format(ROM_NAME = "map_rom", IO_LIST = io_list, SIGNAL_LIST = sig_list, ASSIGN_LIST = as_list))
