@@ -93,8 +93,8 @@ component mux_idb is port(
 end component; 
 
 component mux_8 is port(
-	m_in_0, m_in_1 : in std_logic_vector(7 downto 0); 
-	sel : in std_logic; 
+	m_in_0, m_in_1, m_in_2 : in std_logic_vector(7 downto 0); 
+	sel : in std_logic_vector(1 downto 0); 
 	m_out : out std_logic_vector ( 7 downto 0)
 ); 
 end component; 
@@ -185,9 +185,13 @@ signal mux_add_sel : std_logic;
 
 signal AR_0_out, AR_1_out : std_logic_vector(3 downto 0); 
 
+signal Mov_mux_en : std_logic; 
+
+signal cmp_out : std_logic; 
 --signal ad_en : std_logic; 
 --signal ad_in , ad_out : std_logic_vector (7 downto 0); 
 
+signal Ro_sel_rom : std_logic; 
 begin
 
 IR : reg port map (
@@ -242,7 +246,7 @@ C : reg port map (
 Z : reg port map (
   clk => m_clk, 
   en => Z_en, 
-  r_in => Alu_Z, 
+  r_in => mux_c_out,  
   r_out => Z_out, 
   s => "11"
 ); 
@@ -283,6 +287,7 @@ mux_c : mux port map (
 mux_add_1 : mux_8 port map (
 	m_in_0 => pc_out_8, 
 	m_in_1 => (H_out & L_out),  
+	m_in_2 => (AR_1_out & AR_0_out), 
 	sel => mux_add_sel,  
 	m_out => mux_add_out
 ); 
@@ -318,15 +323,37 @@ pc_cnt : pc_cnt port map(
   pc_out => pc_out_8
 ); 
 
+mux_z : mux port map( 
+	m_in(0) => Alu_Z, 
+	m_in(1) => cmp_out, 
+	sel => Mc_sel,  
+	m_out => mux_c_out
+); 
 
-
+cmp_1 : cmp port map (
+	A => A_out, 
+	B => AR_1_out, 
+	cmp_out => cmp_out
+); 
+	
 IR_in <= Data when Dt_en= '1' and dt_dir = '1' else (others => 'Z'); 
 mux_D <= Data when Dt_en= '1' and dt_dir = '0' else (others => 'Z'); 
 
 Data <= mux_out when Dt_en = '1' and dt_dir = '0' else (others => 'Z');
 addr <= mux_add_out when ad_en = '1' 
 	 else "ZZZZZZZZ"; 
- 
+
+A_en <= '1' when Mov_mux_en = '1' AND AR_0_out(3 downto 2) = "00" else '0' ; 
+B_en <= '1' when Mov_mux_en = '1' AND AR_0_out(3 downto 2) = "01" else '0' ; 
+H_en <= '1' when Mov_mux_en = '1' AND AR_0_out(3 downto 2) = "10" else '0' ; 
+L_en <= '1' when Mov_mux_en = '1' AND AR_0_out(3 downto 2) = "11" else '0' ; 
+
+Ro_sel_dec <= "000" when AR_0_out(1 downto 0)= "00" else
+              "001" when AR_0_out(1 downto 0)= "01" else
+			  "010" when AR_0_out(1 downto 0)= "10" else
+			  "011";
+Ro_sel <= Ro_sel_dec when Mov_mux_en = '1' else Ro_sel_rom;
+
 --Alu_Ci <= Ci; 
 --Alu_alufun <= alufun; 
 

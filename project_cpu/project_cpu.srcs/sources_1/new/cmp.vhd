@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 2022/06/27 12:59:44
+-- Create Date: 2022/07/13 14:37:46
 -- Design Name: 
--- Module Name: alu - Behavioral
+-- Module Name: cmp - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -33,38 +33,17 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity alu is
-  Port (
-	A : in std_logic_vector(3 downto 0); 
-	B : in std_logic_vector(3 downto 0); 
-	Ci : in std_logic; 
-	alufun : in std_logic_vector(1 downto 0):= "00";
-	F : out std_logic_vector (3 downto 0); 
-	Co : out std_logic:='0'; 
-	Z : out std_logic:= '0'
+entity cmp is
+  Port ( 
+  A : in std_logic_vector (3 downto 0); 
+  B : in std_logic_vector (3 downto 0); 
+  cmp_out : in std_logic
   );
-end alu;
+end cmp;
 
-
-architecture Behavioral of alu is
+architecture Behavioral of cmp is
 
 begin
-
-process 
-begin 
-case alufun is 
-	when "00" => 
-	F <= a+b+Ci; 
-	when "01" => 
-	F <= a-b;
-end case; 
-end process; 
-
-Co <= '1' when alufun= "00" and (
-	(A(3)='1' and B(3)= '1') or
-	((A(3)='1' or B(3)= '1') and F(3)= '0') 
-	); 
-
-Z <= '1' when alufun= "01" and F= '0'; 
+cmp_out <= '1' when A=B else '0'; 
 
 end Behavioral;
