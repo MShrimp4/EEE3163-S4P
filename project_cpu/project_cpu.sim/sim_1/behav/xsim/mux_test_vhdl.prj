@@ -1,0 +1,7 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../project_cpu.srcs/sources_1/imports/EEE3163-S4P/mux_idb.vhd" \
+"../../../../project_cpu.srcs/sources_1/imports/EEE3163-S4P/mux_test.vhd" \
+
+# Do not sort compile order
+nosort

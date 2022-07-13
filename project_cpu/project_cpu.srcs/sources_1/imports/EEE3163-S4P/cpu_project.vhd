@@ -1,41 +1,32 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 2022/06/25 00:39:35
--- Design Name: 
--- Module Name: cpu_project - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
-
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity cpu_project is
   Port ( 
   Data : inout std_logic_vector(3 downto 0); 
-  addr : out std_logic_vector(7 downto 0)
+  addr : out std_logic_vector(7 downto 0); 
+  m_clk : in std_logic; 
+  
+  Dt_en : in std_logic; 
+  Dt_dir : in std_logic;  
+  
+  Ro_sel : in std_logic_vector(2 downto 0); 
+  
+  IR_en, A_en, B_en, PH_en, PL_en, H_en, L_en, C_en, Z_en , Ad_en: in std_logic; 
+  Mc_sel , Ad_sel : in std_logic; 
+  
+  Ci: in std_logic; 
+  alufun : in std_logic_vector(1 downto 0); 
+  
+  CE : in std_logic; 
+  
+  AR_0_en : in std_logic; 
+  AR_1_en : in std_logic; 
+  
+  pc_clr : in std_logic
   );
 end cpu_project;
 
@@ -81,7 +72,7 @@ end component;
 
 component mux is port(
 	m_in : in std_logic_vector(1 downto 0); 
-	sel : in std_logic; 
+	sel : in std_logic_vector(2 downto 0); 
 	m_out : out std_logic
 ); 
 end component; 
@@ -93,9 +84,18 @@ component mux_idb is port(
   m_in_3 : in std_logic_vector(3 downto 0);
   m_in_4 : in std_logic_vector(3 downto 0);
   m_in_5 : in std_logic_vector(3 downto 0);
+  m_in_6 : in std_logic_vector(3 downto 0);
+  m_in_7 : in std_logic_vector(3 downto 0);
   
   Ro_sel : in std_logic_vector(2 downto 0); 
   m_out : out std_logic_vector(3 downto 0) 
+); 
+end component; 
+
+component mux_8 is port(
+	m_in_0, m_in_1 : in std_logic_vector(7 downto 0); 
+	sel : in std_logic; 
+	m_out : out std_logic_vector ( 7 downto 0)
 ); 
 end component; 
 
@@ -111,33 +111,234 @@ component pc_cnt is port(
 ); 
 end component; 
 
-signal IR_en : std_logic; 
+component buf_8 is port(
+	Buffer_en : in std_logic;
+      
+    Data_in : in std_logic_vector(7 downto 0); 
+    Data_out : out std_logic_vector(7 downto 0)
+	); 
+end component; 
+
+signal Data_s : std_logic_vector(3 downto 0); 
+
+signal IR_en_s : std_logic; 
 signal IR_in : std_logic_vector (3 downto 0); 
-
-signal A_en : std_logic; 
+signal IR_out : std_logic_vector ( 3 downto 0);
+ 
+signal A_en_s : std_logic; 
 signal A_in : std_logic_vector (3 downto 0); 
+signal A_out : std_logic_vector (3 downto 0); 
+signal A_s_in : std_logic_vector (1 downto 0); 
+signal A_s_out : std_logic; 
 
-signal B_en : std_logic; 
+--signal B_en : std_logic; 
 signal B_in : std_logic_vector (3 downto 0); 
+signal B_out : std_logic_vector (3 downto 0); 
 
-signal H_en : std_logic; 
+--signal H_en : std_logic; 
 signal H_in : std_logic_vector (3 downto 0); 
+signal H_out : std_logic_vector (3 downto 0); 
 
-signal L_en : std_logic; 
+--signal L_en : std_logic; 
 signal L_in : std_logic_vector (3 downto 0); 
+signal L_out : std_logic_vector (3 downto 0); 
 
-signal C_en : std_logic; 
-signal C_in : std_logic; 
+--signal C_en : std_logic; 
+signal C_in : std_logic_vector (3 downto 0); 
+signal C_out : std_logic_vector (3 downto 0); 
 
-signal Z_en : std_logic; 
+--signal Z_en : std_logic; 
 signal Z_in : std_logic; 
+signal Z_out : std_logic; 
 
-signal PH_en : std_logic; 
+--signal PH_en : std_logic; 
+--signal PL_en : std_logic_vector (3 downto 0);  
+signal PC_out : std_logic_vector(7 downto 0); 
 
+signal AR_1_en , AR_2_en : std_logic; 
+signal AR_1_in , AR_2_in : std_logic_vector (3 downto 0);  
+signal AR_1_out, AR_2_out : std_logic_vector (3 downto 0); 
+
+
+signal Alu_A : std_logic_vector(3 downto 0); 
+signal Alu_B : std_logic_vector(3 downto 0); 
+signal Alu_F : std_logic_vector(3 downto 0); 
+--signal Alu_Ci : std_logic; 
+signal Alu_alufun : std_logic_vector(1 downto 0); 
+signal Alu_Co : std_logic; 
+signal Alu_Z : std_logic; 
+
+signal mux_out : std_logic_vector(3 downto 0); 
+signal mux_sel : std_logic_vector(2 downto 0); 
+
+--signal ad_en : std_logic; 
+signal ad_in : std_logic_vector (7 downto 0); 
+signal ad_out : std_logic_vector (7 downto 0); 
+
+signal mux_c_1 , mux_c_2 , mux_c_out: std_logic; 
+signal mux_c_sel : std_logic; 
+
+signal pc_out_8 : std_logic_vector( 7 downto 0); 
+
+signal mux_add_1 , mux_add_2 , mux_add_out : std_logic_vector(7 downto 0); 
+signal mux_add_sel : std_logic;  
+
+signal AR_0_out, AR_1_out : std_logic_vector(3 downto 0); 
+
+--signal ad_en : std_logic; 
+--signal ad_in , ad_out : std_logic_vector (7 downto 0); 
 
 begin
 
---IR : reg port map (
+IR : reg port map (
+  clk => m_clk,  
+  en => IR_en,  
+  r_in => Data,  
+  r_out => IR_out, -- 그냥 출력
+  s => "11"
+  ); 
+
+A : reg port map ( 
+  clk => m_clk, 
+  en => A_en, 
+  r_in => mux_out, 
+  r_out => A_out, 
+  s_out => mux_c_2, 
+  s => A_s_in
+  ); 
+
+B : reg port map ( 
+  clk => m_clk, 
+  en => B_en, 
+  r_in => mux_out, 
+  r_out => B_out, 
+  s => "11"
+  ); 
+  
+H : reg port map ( 
+  clk => m_clk, 
+  en => H_en, 
+  r_in => mux_out, 
+  r_out => H_out,  
+  s => "11"
+  ); 
+   
+L : reg port map ( 
+  clk => m_clk, 
+  en => L_en, 
+  r_in => mux_out, 
+  r_out => L_out, 
+  s => "11"
+  ); 
+
+C : reg port map (
+  clk => m_clk, 
+  en => C_en, 
+  r_in => mux_c_out, 
+  r_out => C_out, 
+  s => "11"
+); 
+
+Z : reg port map (
+  clk => m_clk, 
+  en => Z_en, 
+  r_in => Alu_Z, 
+  r_out => Z_out, 
+  s => "11"
+); 
+
+AR_0 : reg port map (
+  clk => m_clk, 
+  en => AR_0_en, 
+  r_in => mux_out, --AR_0_in, 
+  r_out => AR_0_out,--AR_0_out, 
+  s => "11"
+); 
+
+AR_1 : reg port map (
+  clk => m_clk, 
+  en => AR_1_en, 
+  r_in => mux_out, 
+  r_out => AR_1_out, 
+  s => "11"
+); 
+
+ALU_1 : alu port map (
+	A => A_out,  
+	B => B_out, 
+	Ci=> Ci, 
+	alufun => alufun, 
+	F => Alu_F, 
+	Co => Alu_Co, 
+	Z => Alu_Z
+); 
+
+mux_c : mux port map ( 
+	m_in(0) => Alu_Co, 
+	m_in(1) => A_out(3), 
+	sel => Mc_sel,  
+	m_out => mux_c_out
+); 
+
+mux_add_1 : mux_8 port map (
+	m_in_0 => pc_out_8, 
+	m_in_1 => (H_out & L_out),  
+	sel => mux_add_sel,  
+	m_out => mux_add_out
+); 
+
+Ad_out_1 : buf port map (
+	Buffer_en => ad_en,      
+    Data_in => ad_in, 
+    Data_out => ad_out 
+); 
+
+mux_idb : mux_idb port map( 
+  m_in_0 => A_out,  
+  m_in_1 => B_out, 
+  m_in_2 => H_out, 
+  m_in_3 => L_out, 
+  m_in_4 => Alu_F, 
+  m_in_5 => Data, 
+  m_in_6 => AR_1_out,  
+  m_in_7 => AR_0_out, 
+  
+  Ro_sel => Ro_sel, 
+  m_out => mux_out
+); 
+
+pc_cnt : pc_cnt port map( 
+  clk => m_clk, 
+  PH_en => H_en, 
+  PL_en => L_en, 
+  PH => PH, 
+  PL => PL, 
+  c_en => CE,   
+  clr => pc_clr, 
+  pc_out => pc_out_8
+); 
+
+
+
+IR_in <= Data when Dt_en= '1' and dt_dir = '1' else (others => 'Z'); 
+mux_D <= Data when Dt_en= '1' and dt_dir = '0' else (others => 'Z'); 
+
+Data <= mux_out when Dt_en = '1' and dt_dir = '0' else (others => 'Z');
+addr <= mux_add_out when ad_en = '1' 
+	 else "ZZZZZZZZ"; 
+ 
+--Alu_Ci <= Ci; 
+--Alu_alufun <= alufun; 
+
+--Z_in <= Alu_Z; 
+--mux_c_1 <= Alu_Co; 
+
+--Alu_A <= A_out; 
+--Alu_B <= B_out; 
+
+--mux_c_1 <= a_s_out; 
+--mux_c_2 <= Alu_co;
+ 
 
 
 end Behavioral;

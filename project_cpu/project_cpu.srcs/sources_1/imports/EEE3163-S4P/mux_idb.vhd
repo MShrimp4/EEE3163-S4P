@@ -41,6 +41,8 @@ entity mux_idb is Port
   m_in_3 : in std_logic_vector(3 downto 0);
   m_in_4 : in std_logic_vector(3 downto 0);
   m_in_5 : in std_logic_vector(3 downto 0);
+  m_in_6 : in std_logic_vector(3 downto 0);
+  m_in_7 : in std_logic_vector(3 downto 0);
   
   Ro_sel : in std_logic_vector(2 downto 0); 
   m_out : out std_logic_vector(3 downto 0) 
@@ -58,6 +60,9 @@ with Ro_sel select
 			m_in_2 when "010",
 			m_in_3 when "011",
 			m_in_4 when "100",
-			m_in_5 when others; 
+			m_in_5 when "101",
+			m_in_6 when "110",
+			m_in_7 when "111",
+			m_in_0 when others;
 	
 end Behavioral;

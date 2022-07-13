@@ -34,10 +34,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity Reg is
   Port ( 
   clk : in std_logic; 
-  en : in std_logic:='0'; 
+  en : in std_logic; 
   r_in : in std_logic_vector( 3 downto 0); 
   r_out : out std_logic_vector(3 downto 0); -- 그냥 출력
-  s_out : out std_logic; --shift 출력
   s : in std_logic_vector(1 downto 0) --shift 
   );
 end Reg;
@@ -51,31 +50,29 @@ begin
 	process(clk)
 	begin
 	if rising_edge(clk) then 
-	if en= '1' then 
-		if s = "11" then 
+		if en = '1' OR s = "11" then 
 		r <= r_in; 
 		
 		elsif s= "01" then 
-		s_out <= r(3); 
+		 
 		r(3) <= r(2); 
 		r(2) <= r(1); 
 		r(1) <= r(0); 
 		r(0) <= '0'; 
 		
 		elsif s= "10" then 
-		s_out <= r_in(3); 
+		 
 		r(3) <= r(2); 
 		r(2) <= r(1); 
 		r(1) <= r(0); 
 		r(0) <= '0'; 
 		 
 		else 
-		r <= r_in; 
+		r <= r; 
 		end if; 
-	
-	end if; 
-	r_out <= r; 
 	end if; 
 	end process; 
+	
+	r_out <= r; 
 	
 end Behavioral;
