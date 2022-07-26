@@ -10,28 +10,54 @@ entity cpu_project is
   addr : out std_logic_vector(7 downto 0); 
   m_clk : in std_logic; 
   
-  Dt_en : in std_logic; 
-  Dt_dir : in std_logic;  
-  
-  Ro_sel : in std_logic_vector(2 downto 0); 
-  
-  IR_en, A_en, B_en, PH_en, PL_en, H_en, L_en, C_en, Z_en , Ad_en: in std_logic; 
-  Mc_sel , Ad_sel : in std_logic; 
-  
-  Ci: in std_logic; 
-  alufun : in std_logic_vector(1 downto 0); 
-  
-  CE : in std_logic; 
-  
-  AR_0_en : in std_logic; 
-  AR_1_en : in std_logic; 
-  
-  pc_clr : in std_logic
+  reset : in std_logic 
   );
 end cpu_project;
 
 architecture Behavioral of cpu_project is
 
+component uop_rom is port (
+addr : in STD_LOGIC_VECTOR (5 downto 0); 
+Ad_en : out STD_LOGIC; 
+Ad_sel : out STD_LOGIC; 
+Dt_en : out STD_LOGIC; 
+Dt_dir : out STD_LOGIC; 
+bRD : out STD_LOGIC; 
+bWR : out STD_LOGIC; 
+IR_en : out STD_LOGIC; 
+A_en : out STD_LOGIC; 
+B_en : out STD_LOGIC; 
+PH_en : out STD_LOGIC; 
+PL_en : out STD_LOGIC; 
+cpc_en : out STD_LOGIC; 
+H_en : out STD_LOGIC; 
+L_en : out STD_LOGIC; 
+C_en : out STD_LOGIC; 
+MC_sel : out STD_LOGIC; 
+Ci : out STD_LOGIC; 
+Z_en : out STD_LOGIC; 
+alufun : out STD_LOGIC_VECTOR (1 downto 0); 
+Ro_sel : out STD_LOGIC_VECTOR (2 downto 0); 
+CA_sel : out STD_LOGIC; 
+Mmc_sel : out STD_LOGIC_VECTOR (1 downto 0); 
+Next_add : out STD_LOGIC_VECTOR (5 downto 0); 
+AS1 : out STD_LOGIC; 
+AS0 : out STD_LOGIC; 
+AR1_en : out STD_LOGIC; 
+AR0_en : out STD_LOGIC; 
+Mov_mux_en : out STD_LOGIC; 
+Mov_mux_sel : out STD_LOGIC; 
+Z_sel : out STD_LOGIC);
+end component; 
+
+component adr_reg is
+  Port (
+	clk : in std_logic; 
+	m_in : in std_logic_vector ( 3 downto 0); 
+	Load : in std_logic; 
+	m_out : out std_logic_vector ( 3 downto 0)
+  );
+end component;
 
 component reg is port(
   clk : in std_logic; 
@@ -44,7 +70,7 @@ component reg is port(
 end component;
 
 component flp is port(
-	clk : in std_logic; 
+  clk : in std_logic; 
   en : in std_logic:='0'; 
   r_in : in std_logic; 
   r_out : out std_logic -- 그냥 출력
@@ -121,6 +147,40 @@ end component;
 
 signal Data_s : std_logic_vector(3 downto 0); 
 
+signal addr : std_logic_vector (5 downto 0); 
+signal Ad_en : STD_LOGIC; 
+signal Ad_sel : STD_LOGIC; 
+signal Dt_en : STD_LOGIC; 
+signal Dt_dir : STD_LOGIC; 
+signal bRD : STD_LOGIC; 
+signal bWR : STD_LOGIC; 
+signal IR_en :STD_LOGIC; 
+
+signal A_en : STD_LOGIC; 
+signal B_en : STD_LOGIC; 
+signal PH_en : STD_LOGIC; 
+signal PL_en : STD_LOGIC; 
+signal cpc_en : STD_LOGIC; 
+signal H_en : STD_LOGIC; 
+signal L_en : STD_LOGIC; 
+signal C_en : STD_LOGIC; 
+signal MC_sel : STD_LOGIC; 
+signal Ci : STD_LOGIC; 
+signal Z_en : STD_LOGIC; 
+signal alufun : STD_LOGIC_VECTOR (1 downto 0); 
+signal Ro_sel : STD_LOGIC_VECTOR (2 downto 0); 
+signal CA_sel : STD_LOGIC; 
+signal Mmc_sel : STD_LOGIC_VECTOR (1 downto 0); 
+signal Next_add : STD_LOGIC_VECTOR (5 downto 0); 
+signal AS1 : STD_LOGIC; 
+signal AS0 : STD_LOGIC; 
+signal AR1_en : STD_LOGIC; 
+signal AR0_en : STD_LOGIC; 
+signal Mov_mux_en : STD_LOGIC; 
+signal Mov_mux_sel : STD_LOGIC; 
+signal Z_sel : STD_LOGIC; 
+
+
 signal IR_en_s : std_logic; 
 signal IR_in : std_logic_vector (3 downto 0); 
 signal IR_out : std_logic_vector ( 3 downto 0);
@@ -191,7 +251,19 @@ signal cmp_out : std_logic;
 --signal ad_en : std_logic; 
 --signal ad_in , ad_out : std_logic_vector (7 downto 0); 
 
-signal Ro_sel_rom : std_logic; 
+signal JZ, JC : std_logic; 
+
+signal mc_out : std_logic; 
+signal Mmc_sel : std_logic_vector ( 2 downto 0);  
+
+signal Ro_sel_rom : std_logic;
+
+signal MIR_out : std_logic_vector(3 downto 0); 
+ 
+signal CA_out : std_logic_vector( 3 downto 0); 
+
+signal CAR_out :std_logic_vector ( 3 downto 0); 
+ 
 begin
 
 IR : reg port map (
@@ -318,7 +390,7 @@ pc_cnt : pc_cnt port map(
   PL_en => L_en, 
   PH => PH, 
   PL => PL, 
-  c_en => CE,   
+  c_en => cpc_en,   
   clr => pc_clr, 
   pc_out => pc_out_8
 ); 
@@ -334,6 +406,63 @@ cmp_1 : cmp port map (
 	A => A_out, 
 	B => AR_1_out, 
 	cmp_out => cmp_out
+); 
+	
+mux_mc : mux_idb port map (
+  m_in_0 => '0',  
+  m_in_1 => '1', 
+  m_in_2 => JC, 
+  m_in_3 => not JZ, 
+  m_in_4 => not reset, 
+  m_in_5 => '0', 
+  m_in_6 => '0',  
+  m_in_7 => '0', 
+  
+  Ro_sel => Mmc_sel, 
+  m_out => mc_out
+  ); 
+
+
+CAR : adr_reg port map (
+	clk => m_clk,  
+	m_in => CA_out, 
+	Load => mc_out,  
+	m_out => CAR_out
+	); 
+	
+control_rom : uop_rom port map (
+
+addr => addr, 
+Ad_en => ad_en, 
+Ad_sel => ad_sel, 
+Dt_en => dt_en, 
+Dt_dir => dt_dir, 
+bRD => bRD, 
+bWR => bWR, 
+IR_en => IR_en, 
+A_en => A_en, 
+B_en => B_en, 
+PH_en => PH_en ,
+PL_en => PL_en ,
+cpc_en => cpc_en, 
+H_en => H_en, 
+L_en => L_en, 
+C_en => C_en,
+MC_sel => MC_sel, 
+Ci => Ci, 
+Z_en => Z_en, 
+alufun => alufun, 
+Ro_sel => Ro_sel, 
+CA_sel => CA_sel, 
+Mmc_sel => Mmc_sel, 
+Next_add => Next_add, 
+AS1 => AS1, 
+AS0 => AS0, 
+AR1_en => AR1_en, 
+AR0_en => AR0_en, 
+Mov_mux_en => Mov_mux_en, 
+Mov_mux_sel => Mov_mux_sel, 
+Z_sel => Z_sel
 ); 
 	
 IR_in <= Data when Dt_en= '1' and dt_dir = '1' else (others => 'Z'); 

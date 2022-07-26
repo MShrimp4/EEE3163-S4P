@@ -37,7 +37,7 @@ entity cmp is
   Port ( 
   A : in std_logic_vector (3 downto 0); 
   B : in std_logic_vector (3 downto 0); 
-  cmp_out : in std_logic
+  cmp_out : out std_logic
   );
 end cmp;
 

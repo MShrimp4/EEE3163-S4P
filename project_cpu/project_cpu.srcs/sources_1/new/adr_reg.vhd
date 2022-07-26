@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 2022/06/27 12:59:44
+-- Create Date: 2022/07/13 16:15:20
 -- Design Name: 
--- Module Name: alu - Behavioral
+-- Module Name: adr_reg - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -33,37 +33,31 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity alu is
+entity adr_reg is
   Port (
-	A : in std_logic_vector(3 downto 0); 
-	B : in std_logic_vector(3 downto 0); 
-	Ci : in std_logic; 
-	alufun : in std_logic_vector(1 downto 0):= "00";
-	F : inout std_logic_vector (3 downto 0); 
-	Co : out std_logic:='0'; 
-	Z : out std_logic:= '0'
+	clk : in std_logic; 
+	m_in : in std_logic_vector ( 3 downto 0); 
+	Load : in std_logic; 
+	m_out : out std_logic_vector ( 3 downto 0)
   );
-end alu;
+end adr_reg;
 
+architecture Behavioral of adr_reg is
 
-architecture Behavioral of alu is
+signal num : std_logic_vector (3 downto 0); 
 
 begin
 
-process 
+process(clk)
 begin 
-
+if rising_edge(clk) then 
+	if load = '1' then
+	num <= m_in; 
+	else num <= num+1;  
+	end if; 
+end if; 
 end process; 
 
-F <= a+b+Ci when alufun = "10"; 
-F <= a-b when alufun = "11"; 
-
-Co <= '1' when (alufun= "10" and A(3)='1' and B(3)= '1') or
-	(alufun = "10" and A(3)='1' and F(3)= '1') or 
-	(alufun = "10" and B(3)='1' and F(3)= '1')
-	
-	; 
-
-Z <= '1' when alufun= "11" and F(3)= '0'; 
+m_out <= num; 
 
 end Behavioral;
