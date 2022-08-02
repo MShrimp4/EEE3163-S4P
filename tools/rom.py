@@ -34,7 +34,7 @@ def lst_to_bitstr (lst):
     return "".join([str(x) for x in lst])
 
 def minimum_len (size):
-    return int(math.ceil(math.log2(size)))
+    return int(math.ceil(math.log2(size+1)))
 
 def define_io (signal, is_input, length):
     io = "in" if is_input else "out"
@@ -103,7 +103,7 @@ for key, val in signal_dict.items():
 #print (sig_len_dict)
 
 sig_list = "\n".join([gen_rom_define(name,data,state_len) for name,data in rom_dict.items()])
-io_list = "; \n".join([define_io (addr_name,True,minimum_len(state_len))] + [define_io (name, False, length) for name, length in sig_len_dict.items()])
+io_list = "; \n".join([define_io (addr_name,True,minimum_len(state_len-1))] + [define_io (name, False, length) for name, length in sig_len_dict.items()])
 as_list = "\n".join([gen_code_lookup(addr_name, name, length) for name, length in sig_len_dict.items()])
 print(template.format(ROM_NAME = "uop_rom", IO_LIST = io_list, SIGNAL_LIST = sig_list, ASSIGN_LIST = as_list))
 
@@ -126,7 +126,7 @@ with open("map.csv", encoding="UTF-8") as file:
 
 rom_dict = dict()
 sig_len_dict = dict()
-size = minimum_len(state_len)
+size = minimum_len(state_len-1)
 state_len = len(map_list)
 lst = [tobit(x, size) for x in map_list]
 for i in range(size):
@@ -139,6 +139,6 @@ map_len = len(map_list)
 
 
 sig_list = "\n".join([gen_rom_define(name,data,state_len) for name,data in rom_dict.items()])
-io_list = "; \n".join([define_io (addr_name,True,minimum_len(state_len))] + [define_io (name, False, length) for name, length in sig_len_dict.items()])
+io_list = "; \n".join([define_io (addr_name,True,minimum_len(state_len-1))] + [define_io (name, False, length) for name, length in sig_len_dict.items()])
 as_list = "\n".join([gen_code_lookup(addr_name, name, length) for name, length in sig_len_dict.items()])
 print(template.format(ROM_NAME = "map_rom", IO_LIST = io_list, SIGNAL_LIST = sig_list, ASSIGN_LIST = as_list))
