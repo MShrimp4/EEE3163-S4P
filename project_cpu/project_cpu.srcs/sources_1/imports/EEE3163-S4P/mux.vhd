@@ -46,6 +46,6 @@ begin
 
 	with sel select m_out 
 	<= m_in(0) when '0',
-		m_in(1) when '1'; 
-
+		m_in(1) when '1',
+		m_in(0) when others; 
 end Behavioral;

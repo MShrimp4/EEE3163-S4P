@@ -22,6 +22,7 @@ begin
 	<= m_in_0 when "00",
 		m_in_1 when "01",
 		m_in_2 when "10", 
-		m_in_0 when "11"; 
+		m_in_0 when "11",
+		m_in_0 when others; 
 
 end Behavioral;

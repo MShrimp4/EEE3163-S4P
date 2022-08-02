@@ -1,11 +1,15 @@
 # compile vhdl design source files
 vhdl xil_defaultlib  \
 "../../../../project_cpu.srcs/sources_1/imports/EEE3163-S4P/Reg.vhd" \
-"../../../../project_cpu.srcs/sources_1/new/adr_reg.vhd" \
+"../../../../project_cpu.srcs/sources_1/new/S4P.vhd" \
 "../../../../project_cpu.srcs/sources_1/imports/EEE3163-S4P/alu.vhd" \
-"../../../../project_cpu.srcs/sources_1/imports/EEE3163-S4P/buf.vhd" \
 "../../../../project_cpu.srcs/sources_1/new/cmp.vhd" \
+"../../../../project_cpu.srcs/sources_1/new/counter.vhd" \
+"../../../../project_cpu.srcs/sources_1/imports/EEE3163-S4P/flp.vhd" \
+"../../../../project_cpu.srcs/sources_1/new/mov_decoder.vhd" \
 "../../../../project_cpu.srcs/sources_1/imports/EEE3163-S4P/mux.vhd" \
+"../../../../project_cpu.srcs/sources_1/new/mux1_8.vhd" \
+"../../../../project_cpu.srcs/sources_1/new/mux_6.vhd" \
 "../../../../project_cpu.srcs/sources_1/new/mux_8.vhd" \
 "../../../../project_cpu.srcs/sources_1/imports/EEE3163-S4P/mux_idb.vhd" \
 "../../../../project_cpu.srcs/sources_1/imports/EEE3163-S4P/pc_cnt.vhd" \
