@@ -5,7 +5,7 @@ use IEEE.NUMERIC_STD.ALL;
 entity uop_rom is
 PORT (addr : in STD_LOGIC_VECTOR (5 downto 0); 
 Ad_en : out STD_LOGIC; 
-Ad_sel : out STD_LOGIC_vector(1 downto 0); --여기 수정
+Ad_sel : out STD_LOGIC_VECTOR (1 downto 0); 
 Dt_en : out STD_LOGIC; 
 Dt_dir : out STD_LOGIC; 
 bRD : out STD_LOGIC; 
@@ -25,7 +25,7 @@ Z_en : out STD_LOGIC;
 alufun : out STD_LOGIC_VECTOR (1 downto 0); 
 Ro_sel : out STD_LOGIC_VECTOR (2 downto 0); 
 CA_sel : out STD_LOGIC; 
-Mmc_sel : out STD_LOGIC_VECTOR (1 downto 0); 
+Mmc_sel : out STD_LOGIC_VECTOR (2 downto 0); 
 Next_add : out STD_LOGIC_VECTOR (5 downto 0); 
 AS1 : out STD_LOGIC; 
 AS0 : out STD_LOGIC; 
@@ -38,8 +38,8 @@ end entity uop_rom;
 
 architecture Behavioral of uop_rom is
     signal rom_Ad_en_0 : STD_LOGIC_VECTOR (57 downto 0) := "1111111110011111100111111110000011111111111111100000111100";
-    signal rom_Ad_sel_0 : STD_LOGIC_VECTOR (57 downto 0) := "1000000000000000000000000000000000011111111111100000000000";
-	signal rom_Ad_sel_1 : STD_LOGIC_VECTOR (57 downto 0) := "0000000000000000000000000000000000000000000000000000000000"; --여기는 추가한것 
+    signal rom_Ad_sel_1 : STD_LOGIC_VECTOR (57 downto 0) := "1000000000000000000000000000000000000000000000000000000000";
+    signal rom_Ad_sel_0 : STD_LOGIC_VECTOR (57 downto 0) := "0000000000000000000000000000000000011111111111100000000000";
     signal rom_Dt_en_0 : STD_LOGIC_VECTOR (57 downto 0) := "1111101100011011000111101100000011011101110111000000111000";
     signal rom_Dt_dir_0 : STD_LOGIC_VECTOR (57 downto 0) := "0111101100011011000111101100000011011100000111000000111000";
     signal rom_bRD_0 : STD_LOGIC_VECTOR (57 downto 0) := "0011001100011011000011001100000011001100000111000000111001";
@@ -62,7 +62,8 @@ architecture Behavioral of uop_rom is
     signal rom_Ro_sel_1 : STD_LOGIC_VECTOR (57 downto 0) := "0000000000000000011000000000000000000000000000000000000000";
     signal rom_Ro_sel_0 : STD_LOGIC_VECTOR (57 downto 0) := "0011001100011011010011001100000011011110000111100000000000";
     signal rom_CA_sel_0 : STD_LOGIC_VECTOR (57 downto 0) := "0000000000000000000000000000000000000000000000000001000000";
-    signal rom_Mmc_sel_1 : STD_LOGIC_VECTOR (57 downto 0) := "0000000000000000000000000001001000000000000000000000000001";
+    signal rom_Mmc_sel_2 : STD_LOGIC_VECTOR (57 downto 0) := "0000000000000000000000000000000000000000000000000000000001";
+    signal rom_Mmc_sel_1 : STD_LOGIC_VECTOR (57 downto 0) := "0000000000000000000000000001001000000000000000000000000000";
     signal rom_Mmc_sel_0 : STD_LOGIC_VECTOR (57 downto 0) := "1000000001100010010000000001100100010001000100011111000000";
     signal rom_Next_add_5 : STD_LOGIC_VECTOR (57 downto 0) := "0000000000100010000000000000000000000000000000000000000000";
     signal rom_Next_add_4 : STD_LOGIC_VECTOR (57 downto 0) := "0000000000100010000000000001001000000000000000000000000000";
@@ -99,7 +100,7 @@ begin
     alufun <= rom_alufun_1(to_integer(unsigned(addr))) & rom_alufun_0(to_integer(unsigned(addr)));
     Ro_sel <= rom_Ro_sel_2(to_integer(unsigned(addr))) & rom_Ro_sel_1(to_integer(unsigned(addr))) & rom_Ro_sel_0(to_integer(unsigned(addr)));
     CA_sel <= rom_CA_sel_0(to_integer(unsigned(addr)));
-    Mmc_sel <= rom_Mmc_sel_1(to_integer(unsigned(addr))) & rom_Mmc_sel_0(to_integer(unsigned(addr)));
+    Mmc_sel <= rom_Mmc_sel_2(to_integer(unsigned(addr))) & rom_Mmc_sel_1(to_integer(unsigned(addr))) & rom_Mmc_sel_0(to_integer(unsigned(addr)));
     Next_add <= rom_Next_add_5(to_integer(unsigned(addr))) & rom_Next_add_4(to_integer(unsigned(addr))) & rom_Next_add_3(to_integer(unsigned(addr))) & rom_Next_add_2(to_integer(unsigned(addr))) & rom_Next_add_1(to_integer(unsigned(addr))) & rom_Next_add_0(to_integer(unsigned(addr)));
     AS1 <= rom_AS1_0(to_integer(unsigned(addr)));
     AS0 <= rom_AS0_0(to_integer(unsigned(addr)));

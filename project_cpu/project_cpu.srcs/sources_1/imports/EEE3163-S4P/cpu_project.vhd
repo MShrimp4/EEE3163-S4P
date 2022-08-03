@@ -18,6 +18,13 @@ end cpu_project;
 
 architecture Behavioral of cpu_project is
 
+component map_rom is 
+port ( 
+addr : in STD_LOGIC_VECTOR (3 downto 0); 
+MIR : out STD_LOGIC_VECTOR (5 downto 0)
+);
+end component; 
+
 component uop_rom is port (
 addr : in STD_LOGIC_VECTOR (5 downto 0); 
 Ad_en : out STD_LOGIC; 
@@ -41,7 +48,7 @@ Z_en : out STD_LOGIC;
 alufun : out STD_LOGIC_VECTOR (1 downto 0); 
 Ro_sel : out STD_LOGIC_VECTOR (2 downto 0); 
 CA_sel : out STD_LOGIC; 
-Mmc_sel : out STD_LOGIC_VECTOR (1 downto 0); 
+Mmc_sel : out STD_LOGIC_VECTOR (2 downto 0); 
 Next_add : out STD_LOGIC_VECTOR (5 downto 0); 
 AS1 : out STD_LOGIC; 
 AS0 : out STD_LOGIC; 
@@ -55,7 +62,7 @@ end component;
 component mux1_8 is 
   port ( 
   m_in : in std_logic_vector ( 7 downto 0); 
-  sel : in std_logic_vector (1 downto 0); 
+  sel : in std_logic_vector (2 downto 0); 
   m_out : out std_logic
   ); 
 end component; 
@@ -86,7 +93,6 @@ component flp is port(
   r_out : out std_logic -- 그냥 출력
 ); 
 end component; 
-
 
 component buf is port(
 	  Buffer_en : in std_logic;
@@ -132,7 +138,6 @@ component mux_6 is port(
 	m_out : out std_logic_vector(5 downto 0)
 ); end component; 
 
-
 component buf_8 is port(
 	Buffer_en : in std_logic;
       
@@ -176,7 +181,7 @@ component S4P is port(
   alufun : in STD_LOGIC_VECTOR (1 downto 0); 
   Ro_sel : in STD_LOGIC_VECTOR (2 downto 0); 
   CA_sel : in STD_LOGIC; 
-  Mmc_sel : in STD_LOGIC_VECTOR (1 downto 0); 
+  Mmc_sel : in STD_LOGIC_VECTOR (2 downto 0); 
   AS1 : out STD_LOGIC; 
   AS0 : out STD_LOGIC; 
   AR1_en : in STD_LOGIC; 
@@ -202,11 +207,13 @@ component counter is port(
 ); 
 end component; 
 
-signal extdata : std_logic_vector(3 downto 0); 
-signal extadd : std_logic_vector( 7 downto 0);  
+
+
+signal data_s : std_logic_vector(3 downto 0); 
+signal addr_s : std_logic_vector( 7 downto 0);  
+
 signal Op_code : std_logic_vector( 3 downto 0); 
 
-signal Data_s : std_logic_vector(3 downto 0); 
 
 signal clk_s : std_logic; 
 
@@ -330,7 +337,7 @@ signal NRST : std_logic;
 signal mc_out : std_logic; 
 signal Nmc_out : std_logic;
 
-signal Mmc_sel : std_logic_vector ( 1 downto 0);  
+signal Mmc_sel : std_logic_vector (2 downto 0);  
 
 signal Ro_sel_rom : std_logic;
 
@@ -369,6 +376,11 @@ mux_mc : mux1_8 port map (
   sel => Mmc_sel, 
   m_out => mc_out
   ); 
+
+MIR : map_rom port map ( 
+	addr => Op_code, 
+	MIR => MIR_out
+	); 
 
 
 CAR : counter port map (
@@ -498,6 +510,7 @@ S4p_comp : S4P port map (
   Dt_dir => Dt_dir, 
   bRD => bRD_s, 
   bWR => bWR_s, 
+  
   IR_en => IR_en, 
   A_en => A_en,
   B_en => B_en, 
@@ -532,6 +545,10 @@ S4p_comp : S4P port map (
 NJZ <= not JZ_s; 
 NRST <= not reset; 
 Nmc_out <= not Mc_out; 
+
+data_s <= Data; 
+Data <= data_s; 
+addr <= addr_s; 
 
 --A_en <= '1' when Mov_mux_en = '1' AND AR_0_out(3 downto 2) = "00" else '0' ; 
 --B_en <= '1' when Mov_mux_en = '1' AND AR_0_out(3 downto 2) = "01" else '0' ; 

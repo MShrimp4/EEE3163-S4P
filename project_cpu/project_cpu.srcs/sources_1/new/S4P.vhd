@@ -53,7 +53,7 @@ entity S4P is
   alufun : in STD_LOGIC_VECTOR (1 downto 0); 
   Ro_sel : in STD_LOGIC_VECTOR (2 downto 0); 
   CA_sel : in STD_LOGIC; 
-  Mmc_sel : in STD_LOGIC_VECTOR (1 downto 0); 
+  Mmc_sel : in STD_LOGIC_VECTOR (2 downto 0); 
   AS1 : out STD_LOGIC; 
   AS0 : out STD_LOGIC; 
   AR1_en : in STD_LOGIC; 
@@ -86,7 +86,8 @@ component reg is port(
   en : in std_logic:='0'; 
   r_in : in std_logic_vector( 3 downto 0); 
   r_out : out std_logic_vector(3 downto 0); -- 그냥 출력
-  s : in std_logic_vector(1 downto 0) --shift  
+  s : in std_logic_vector(1 downto 0); --shift  
+  s_out : out std_logic --shift 출력
 ); 
 end component;
 
@@ -161,8 +162,8 @@ end component;
 component buf_8 is port(
 	Buffer_en : in std_logic;
       
-    Data_in : in std_logic_vector(7 downto 0); 
-    Data_out : out std_logic_vector(7 downto 0) 
+    Data_in : in std_logic_vector(3 downto 0); 
+    Data_out : out std_logic_vector(3 downto 0) 
 	
 	); 
 end component; 
@@ -187,6 +188,7 @@ signal AR_1_out : std_logic_vector(3 downto 0);
 
 
 signal mux_c_out : std_logic; 
+signal mux_z_out : std_logic; 
 
 signal Alu_F : std_logic_vector(3 downto 0); 
 signal Alu_Co : std_logic; 
@@ -195,8 +197,12 @@ signal pc_out_8 : std_logic_vector ( 7 downto 0);
 
 signal cmp_out : std_logic; 
 
-signal Data_in : std_logic_vector(3 downto 0); 
+--signal Data_in : std_logic_vector(3 downto 0); 
+signal Data_4 : std_logic_vector(3 downto 0); 
 
+signal Buffer_in_en : std_logic;
+signal Buffer_out_en : std_logic; 
+ 
 signal HL : std_logic_vector( 7 downto 0); 
 signal AR : std_logic_vector( 7 downto 0); 
 
@@ -207,7 +213,7 @@ begin
 IR : reg port map (
   clk => m_clk,  
   en => IR_en,  
-  r_in => Data_in,  
+  r_in => Data_4,  
   r_out => IR_out, -- 그냥 출력
   s => "11"
   ); 
@@ -247,14 +253,14 @@ L : reg port map (
 C : flp port map (
   clk => m_clk, 
   en => C_en, 
-  r_in => Alu_Co, 
+  r_in => mux_c_out, 
   r_out => C_out
 ); 
 
 Z : flp port map (
   clk => m_clk, 
   en => Z_en, 
-  r_in => Alu_Z, 
+  r_in => mux_z_out, 
   r_out => Z_out
 ); 
 
@@ -311,7 +317,7 @@ mux_idb_1 : mux_idb port map(
   m_in_2 => H_out, 
   m_in_3 => L_out, 
   m_in_4 => Alu_F, 
-  m_in_5 => Data_in, 
+  m_in_5 => Data_4, 
   m_in_6 => AR_1_out,  
   m_in_7 => AR_0_out, 
   
@@ -321,8 +327,8 @@ mux_idb_1 : mux_idb port map(
 
 pc_cnt_1 : pc_cnt port map( 
   clk => m_clk, 
-  PH_en => H_en, 
-  PL_en => L_en, 
+  PH_en => ph_en, 
+  PL_en => pl_en, 
   PH => mux_out, 
   PL => mux_out, 
   c_en => cpc_en,   
@@ -334,7 +340,7 @@ mux_z : mux port map(
 	m_in(0) => Alu_Z, 
 	m_in(1) => cmp_out, 
 	sel => Mc_sel,  
-	m_out => mux_c_out
+	m_out => mux_z_out
 ); 
 
 cmp_1 : cmp port map (
@@ -342,13 +348,28 @@ cmp_1 : cmp port map (
 	B => AR_1_out, 
 	cmp_out => cmp_out
 ); 
+
+buf_in : buf_8 port map (
+	Data_in => Data, 
+	Buffer_en => Buffer_in_en, 
+	Data_out => Data_4
+); 
+
+buf_out : buf_8 port map(
+	Data_in => mux_out, 
+	Buffer_en => Buffer_out_en, 
+	Data_out => Data
+); 
+
 --mux mc 삭제 
 --car 삭제 
 HL <= (H_out & L_out); 
 AR <= (AR_1_out & AR_0_out); 
 
-Data_in <= Data when Dt_en= '1' and dt_dir = '1' else (others => 'Z');
-Data <= mux_out when Dt_en= '1' and dt_dir= '0';  
+Buffer_in_en <= Dt_en and Dt_dir;  
+Buffer_out_en <= Dt_en and (not Dt_dir);  
+--Data_in <= Data when Dt_en= '1' and dt_dir = '1' else (others => 'Z');
+--Data <= mux_out when Dt_en= '1' and dt_dir= '0';  
 --mux_D <= Data_in when Dt_en= '1' and dt_dir = '1' else (others => 'Z'); 
 
 JZ <= '1' when Z_out = '1'; 
