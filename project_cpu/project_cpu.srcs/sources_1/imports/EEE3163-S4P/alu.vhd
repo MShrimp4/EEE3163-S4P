@@ -39,30 +39,31 @@ entity alu is
 	B : in std_logic_vector(3 downto 0); 
 	Ci : in std_logic; 
 	alufun : in std_logic_vector(1 downto 0):= "00";
-	F : out std_logic_vector (3 downto 0); 
+	F : inout std_logic_vector (3 downto 0); 
 	Co : out std_logic:='0'; 
 	Z : out std_logic:= '0'
   );
 end alu;
 
+
 architecture Behavioral of alu is
+
 begin
 
 process 
 begin 
-case alufun is 
-	when "00" => 
-	F <= a+b+Ci; 
-	when "01" => 
-	F <= a-b;
-end case; 
+
 end process; 
 
-Co <= '1' when alufun= "00" and (
-	(A(3)='1' and B(3)= '1') or
-	((A(3)='1' or B(3)= '1') and F(3)= '0') 
-	); 
+F <= a+b+Ci when alufun = "10"; 
+F <= a-b when alufun = "11"; 
 
-Z <= '1' when alufun= "01" and F= '0'; 
+Co <= '1' when (alufun= "10" and A(3)='1' and B(3)= '1') or
+	(alufun = "10" and A(3)='1' and F(3)= '1') or 
+	(alufun = "10" and B(3)='1' and F(3)= '1')
+	
+	; 
+
+Z <= '1' when alufun= "11" and F(3)= '0'; 
 
 end Behavioral;

@@ -40,7 +40,7 @@ entity pc_cnt is
   PH : in std_logic_vector(3 downto 0); 
   PL : in std_logic_vector(3 downto 0); 
   c_en : in std_logic :='0'; 
-  clr : in std_logic:='1'; --active low 
+  --clr : in std_logic:='1'; --active low 
   pc_out : out std_logic_vector(7 downto 0)
   );
 end pc_cnt;
@@ -55,7 +55,7 @@ begin
 	begin
 	if rising_edge(clk) then 
 		
-		if clr = '1' then 
+		--if clr = '1' then 
 		
 		if pl_en = '1' then 
 		pl_sig <= pl;
@@ -77,14 +77,14 @@ begin
 			end if; 
 		end if; 
 		
-		else 
-		ph_sig <= "0000"; 
-		pl_sig <= "0000"; 
+		--else 
+		--ph_sig <= "0000"; 
+		--pl_sig <= "0000"; 
 		
-		end if; 
-		
-		
+		--end if; 
+			
 	end if; 
+	
 	end process; 
 	pc_out(7 downto 4) <= ph_sig; 
 	pc_out(3 downto 0) <= pl_sig; 

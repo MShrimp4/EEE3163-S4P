@@ -1,0 +1,22 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../project_cpu.srcs/sources_1/imports/EEE3163-S4P/Reg.vhd" \
+"../../../../project_cpu.srcs/sources_1/new/S4P.vhd" \
+"../../../../project_cpu.srcs/sources_1/imports/EEE3163-S4P/alu.vhd" \
+"../../../../project_cpu.srcs/sources_1/new/buf_8.vhd" \
+"../../../../project_cpu.srcs/sources_1/new/cmp.vhd" \
+"../../../../project_cpu.srcs/sources_1/new/counter.vhd" \
+"../../../../project_cpu.srcs/sources_1/imports/EEE3163-S4P/flp.vhd" \
+"../../../../project_cpu.srcs/sources_1/new/map_rom.vhd" \
+"../../../../project_cpu.srcs/sources_1/new/mov_decoder.vhd" \
+"../../../../project_cpu.srcs/sources_1/imports/EEE3163-S4P/mux.vhd" \
+"../../../../project_cpu.srcs/sources_1/new/mux1_8.vhd" \
+"../../../../project_cpu.srcs/sources_1/new/mux_6.vhd" \
+"../../../../project_cpu.srcs/sources_1/new/mux_8.vhd" \
+"../../../../project_cpu.srcs/sources_1/imports/EEE3163-S4P/mux_idb.vhd" \
+"../../../../project_cpu.srcs/sources_1/imports/EEE3163-S4P/pc_cnt.vhd" \
+"../../../../project_cpu.srcs/sources_1/new/uop_rom.vhd" \
+"../../../../project_cpu.srcs/sources_1/imports/EEE3163-S4P/cpu_project.vhd" \
+
+# Do not sort compile order
+nosort

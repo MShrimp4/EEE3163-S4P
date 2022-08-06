@@ -44,8 +44,10 @@ signal m_2 : std_logic_vector(3 downto 0);
 signal m_3 : std_logic_vector(3 downto 0); 
 signal m_4 : std_logic_vector(3 downto 0); 
 signal m_5 : std_logic_vector(3 downto 0); 
+signal m_6 : std_logic_vector(3 downto 0); 
+signal m_7 : std_logic_vector(3 downto 0); 
 
-signal Ro_sel : std_logic_vector(2 downto 0); 
+signal Ro_sel_s : std_logic_vector(2 downto 0); 
 signal m_out : std_logic_vector(3 downto 0);
 
 component mux_idb is port(
@@ -56,6 +58,8 @@ component mux_idb is port(
   m_in_3 : in std_logic_vector(3 downto 0);
   m_in_4 : in std_logic_vector(3 downto 0);
   m_in_5 : in std_logic_vector(3 downto 0);
+  m_in_6 : in std_logic_vector(3 downto 0);
+  m_in_7 : in std_logic_vector(3 downto 0);
   
   Ro_sel : in std_logic_vector(2 downto 0); 
   m_out : out std_logic_vector(3 downto 0) 
@@ -71,7 +75,10 @@ m_in_2 => m_2,
 m_in_3 => m_3, 
 m_in_4 => m_4, 
 m_in_5 => m_5, 
-Ro_sel => Ro_sel, 
+m_in_6 => m_6, 
+m_in_7 => m_7,
+
+Ro_sel => Ro_sel_s, 
 m_out => m_out); 
 
 sim_mux : process 
@@ -84,17 +91,17 @@ begin
 	m_5 <= "0101";
 	
 	wait for 10 ns;
-	Ro_sel <= "101"; 
+	Ro_sel_s <= "101"; 
 	wait for 10 ns;
-	Ro_sel <= "100"; 
+	Ro_sel_s <= "100"; 
 	wait for 10 ns;
-	Ro_sel <= "011"; 
+	Ro_sel_s <= "011"; 
 	wait for 10 ns;
-	Ro_sel <= "010"; 
+	Ro_sel_s <= "010"; 
 	wait for 10 ns;
-	Ro_sel <= "001"; 
+	Ro_sel_s <= "001"; 
 	wait for 10 ns;
-	Ro_sel <= "000";
+	Ro_sel_s <= "000";
 end process; 
 
 end Behavioral;
