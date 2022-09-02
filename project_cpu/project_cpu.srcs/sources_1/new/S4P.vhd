@@ -31,13 +31,11 @@ entity S4P is
   m_clk : in std_logic; 
   IR_out : out std_logic_vector (3 downto 0); 
   
-  --addr : in STD_LOGIC_VECTOR (5 downto 0); 
+   
   Ad_en : in STD_LOGIC; 
   Ad_sel : in STD_LOGIC_vector(1 downto 0); 
   Dt_en : in STD_LOGIC; 
   Dt_dir : in STD_LOGIC; 
-  bRD : out STD_LOGIC; 
-  bWR : out STD_LOGIC; 
   IR_en : in STD_LOGIC; 
   A_en : in STD_LOGIC; 
   B_en : in STD_LOGIC; 
@@ -58,8 +56,6 @@ entity S4P is
   AS0 : out STD_LOGIC; 
   AR1_en : in STD_LOGIC; 
   AR0_en : in STD_LOGIC; 
---Mov_mux_en : in STD_LOGIC; 
---Mov_mux_sel : in STD_LOGIC; 
   Z_sel : in STD_LOGIC; 
   A_s_in : in std_logic_vector(1 downto 0); 
   
@@ -71,109 +67,6 @@ entity S4P is
 end S4P;
 
 architecture Behavioral of S4P is
-
-component adr_reg is
-  Port (
-	clk : in std_logic; 
-	m_in : in std_logic_vector ( 3 downto 0); 
-	Load : in std_logic; 
-	m_out : out std_logic_vector ( 3 downto 0)
-  );
-end component;
-
-component reg is port(
-  clk : in std_logic; 
-  en : in std_logic:='0'; 
-  r_in : in std_logic_vector( 3 downto 0); 
-  r_out : out std_logic_vector(3 downto 0); -- 그냥 출력
-  s : in std_logic_vector(1 downto 0); --shift  
-  s_out : out std_logic --shift 출력
-); 
-end component;
-
-component flp is port(
-  clk : in std_logic; 
-  en : in std_logic:='0'; 
-  r_in : in std_logic; 
-  r_out : out std_logic -- 그냥 출력
-); 
-end component; 
-component alu is port(
-
-	A : in std_logic_vector(3 downto 0); 
-	B : in std_logic_vector(3 downto 0); 
-	Ci : in std_logic; 
-	alufun : in std_logic_vector(1 downto 0):= "00";
-	F : inout std_logic_vector (3 downto 0); --이거 out으로 하면 inout~ 하면서 오류뜸 그래서 inout으로 함. ㅇㅇ
-	Co : out std_logic:='0'; 
-	Z : out std_logic:= '0'
-); 
-end component; 
-
-component buf is port(
-	  Buffer_en : in std_logic;
-      
-      Data_out : in std_logic_vector(3 downto 0); 
-      Data_inout : inout std_logic_vector(3 downto 0)
-); 
-end component; 
-
-component mux is port(
-	m_in : in std_logic_vector(1 downto 0); 
-	sel : in std_logic; 
-	m_out : out std_logic
-); 
-end component; 
-
-component mux_idb is port(
-  m_in_0 : in std_logic_vector(3 downto 0);
-  m_in_1 : in std_logic_vector(3 downto 0);
-  m_in_2 : in std_logic_vector(3 downto 0);
-  m_in_3 : in std_logic_vector(3 downto 0);
-  m_in_4 : in std_logic_vector(3 downto 0);
-  m_in_5 : in std_logic_vector(3 downto 0);
-  m_in_6 : in std_logic_vector(3 downto 0);
-  m_in_7 : in std_logic_vector(3 downto 0);
-  
-  Ro_sel : in std_logic_vector(2 downto 0); 
-  m_out : out std_logic_vector(3 downto 0) 
-); 
-end component; 
-
-component mux_8 is port(
-	m_in_0, m_in_1, m_in_2 : in std_logic_vector(7 downto 0); 
-	sel : in std_logic_vector(1 downto 0); 
-	m_out : out std_logic_vector ( 7 downto 0)
-); 
-end component; 
-
-component pc_cnt is port(
-  clk : in std_logic; 
-  PH_en : in std_logic := '0'; 
-  PL_en : in std_logic := '0'; 
-  PH : in std_logic_vector(3 downto 0); 
-  PL : in std_logic_vector(3 downto 0); 
-  c_en : in std_logic :='0'; 
-  --clr : in std_logic:='1'; --active low 
-  pc_out : out std_logic_vector(7 downto 0)
-); 
-end component; 
-
-component buf_8 is port(
-	Buffer_en : in std_logic;
-      
-    Data_in : in std_logic_vector(3 downto 0); 
-    Data_out : out std_logic_vector(3 downto 0) 
-	
-	); 
-end component; 
-
-component cmp is port ( 
-  A : in std_logic_vector (3 downto 0); 
-  B : in std_logic_vector (3 downto 0); 
-  cmp_out : out std_logic
-); 
-end component; 
 
 signal mux_out : std_logic_vector(3 downto 0); 
 
@@ -196,8 +89,7 @@ signal Alu_Z : std_logic;
 signal pc_out_8 : std_logic_vector ( 7 downto 0); 
 
 signal cmp_out : std_logic; 
-
---signal Data_in : std_logic_vector(3 downto 0); 
+ 
 signal Data_4 : std_logic_vector(3 downto 0); 
 
 signal Buffer_in_en : std_logic;
@@ -210,15 +102,17 @@ signal mux_add_out : std_logic_vector (7 downto 0);
 
 begin
 
-IR : reg port map (
+IR : entity work.reg (Behavioral) 
+port map (
   clk => m_clk,  
   en => IR_en,  
   r_in => Data_4,  
-  r_out => IR_out, -- 그냥 출력
+  r_out => IR_out, -- �׳� ���
   s => "11"
   ); 
 
-A : reg port map ( 
+A : entity work.reg (Behavioral)
+port map ( 
   clk => m_clk, 
   en => A_en, 
   r_in => mux_out, 
@@ -226,7 +120,8 @@ A : reg port map (
   s => A_s_in
   ); 
 
-B : reg port map ( 
+B : entity work.reg (Behavioral)
+port map ( 
   clk => m_clk, 
   en => B_en, 
   r_in => mux_out, 
@@ -234,7 +129,8 @@ B : reg port map (
   s => "11"
   ); 
   
-H : reg port map ( 
+H : entity work.reg (Behavioral)
+port map ( 
   clk => m_clk, 
   en => H_en, 
   r_in => mux_out, 
@@ -242,7 +138,8 @@ H : reg port map (
   s => "11"
   ); 
    
-L : reg port map ( 
+L : entity work.reg (Behavioral)
+port map ( 
   clk => m_clk, 
   en => L_en, 
   r_in => mux_out, 
@@ -250,21 +147,24 @@ L : reg port map (
   s => "11"
   ); 
 
-C : flp port map (
+C : entity work.flp (Behavioral)
+port map (
   clk => m_clk, 
   en => C_en, 
   r_in => mux_c_out, 
   r_out => C_out
 ); 
 
-Z : flp port map (
+Z : entity work.flp (Behavioral)
+port map (
   clk => m_clk, 
   en => Z_en, 
   r_in => mux_z_out, 
   r_out => Z_out
 ); 
 
-AR_0 : reg port map (
+AR_0 : entity work.reg (Behavioral)
+port map (
   clk => m_clk, 
   en => AR0_en, 
   r_in => mux_out, --AR_0_in, 
@@ -272,7 +172,8 @@ AR_0 : reg port map (
   s => "11"
 ); 
 
-AR_1 : reg port map (
+AR_1 : entity work.reg (Behavioral)
+port map (
   clk => m_clk, 
   en => AR1_en, 
   r_in => mux_out, 
@@ -280,38 +181,36 @@ AR_1 : reg port map (
   s => "11"
 ); 
 
-ALU_1 : alu port map (
-	A => A_out,  
-	B => B_out, 
-	Ci=> Ci, 
-	alufun => alufun, 
-	F => Alu_F, 
-	Co => Alu_Co, 
-	Z => Alu_Z
+ALU_1 : entity work.alu (Behavioral)
+port map (
+   A => A_out,  
+   B => B_out, 
+   Ci=> Ci, 
+   alufun => alufun, 
+   F => Alu_F, 
+   Co => Alu_Co, 
+   Z => Alu_Z
 ); 
 
-mux_c : mux port map ( 
-	m_in(0) => Alu_Co, 
-	m_in(1) => A_out(3), 
-	sel => Mc_sel,  
-	m_out => mux_c_out
+mux_c : entity work.mux (Behavioral)
+port map ( 
+   m_in(0) => Alu_Co, 
+   m_in(1) => A_out(3), 
+   sel => Mc_sel,  
+   m_out => mux_c_out
 ); 
 
-mux_add_1 : mux_8 port map (
-	m_in_0 => pc_out_8, 
-	m_in_1 => HL, --(H_out & L_out),  
-	m_in_2 => AR, 
-	sel => ad_sel,  
-	m_out => mux_add_out
+mux_add_1 : entity work.mux_8 (Behavioral)
+port map (
+   m_in_0 => pc_out_8, 
+   m_in_1 => HL, --(H_out & L_out),  
+   m_in_2 => AR, 
+   sel => ad_sel,  
+   m_out => mux_add_out
 ); 
 
---Ad_out_1 : buf port map (
---	Buffer_en => ad_en,      
---    Data_in => ad_in, 
---    Data_out => ad_out 
---); 
-
-mux_idb_1 : mux_idb port map( 
+mux_idb_1 : entity work.mux_idb (Behavioral)
+port map( 
   m_in_0 => A_out,  
   m_in_1 => B_out, 
   m_in_2 => H_out, 
@@ -325,59 +224,59 @@ mux_idb_1 : mux_idb port map(
   m_out => mux_out
 ); 
 
-pc_cnt_1 : pc_cnt port map( 
+pc_cnt_1 : entity work.pc_cnt (Behavioral)
+port map( 
   clk => m_clk, 
   PH_en => ph_en, 
   PL_en => pl_en, 
   PH => mux_out, 
   PL => mux_out, 
   c_en => cpc_en,   
-  --clr => pc_clr, 
   pc_out => pc_out_8
 ); 
 
-mux_z : mux port map( 
-	m_in(0) => Alu_Z, 
-	m_in(1) => cmp_out, 
-	sel => Mc_sel,  
-	m_out => mux_z_out
+mux_z : entity work.mux (Behavioral)
+port map( 
+   m_in(0) => Alu_Z, 
+   m_in(1) => cmp_out, 
+   sel => Mc_sel, 
+   m_out => mux_z_out
 ); 
 
-cmp_1 : cmp port map (
-	A => A_out, 
-	B => AR_1_out, 
-	cmp_out => cmp_out
+cmp_1 : entity work.cmp (Behavioral)
+port map (
+   A => A_out, 
+   B => AR_1_out, 
+   cmp_out => cmp_out
 ); 
 
-buf_in : buf_8 port map (
-	Data_in => Data, 
-	Buffer_en => Buffer_in_en, 
-	Data_out => Data_4
+buf_in : entity work.buf_8 (Behavioral)
+port map (
+   Data_in => Data, 
+   Buffer_en => Buffer_in_en, 
+   Data_out => Data_4
 ); 
 
-buf_out : buf_8 port map(
-	Data_in => mux_out, 
-	Buffer_en => Buffer_out_en, 
-	Data_out => Data
+buf_out : entity work.buf_8 (Behavioral)
+port map(
+   Data_in => mux_out, 
+   Buffer_en => Buffer_out_en, 
+   Data_out => Data
 ); 
-
---mux mc 삭제 
---car 삭제 
+ 
 HL <= (H_out & L_out); 
 AR <= (AR_1_out & AR_0_out); 
 
 Buffer_in_en <= Dt_en and Dt_dir;  
 Buffer_out_en <= Dt_en and (not Dt_dir);  
---Data_in <= Data when Dt_en= '1' and dt_dir = '1' else (others => 'Z');
---Data <= mux_out when Dt_en= '1' and dt_dir= '0';  
---mux_D <= Data_in when Dt_en= '1' and dt_dir = '1' else (others => 'Z'); 
+
 
 JZ <= '1' when Z_out = '1'; 
 JC <= '1' when C_out = '1'; 
 
 
 addr <= mux_add_out when ad_en = '1' 
-	 else "ZZZZZZZZ"; 
+    else "ZZZZZZZZ"; 
 
 AR0_out <= AR_0_out; 
 

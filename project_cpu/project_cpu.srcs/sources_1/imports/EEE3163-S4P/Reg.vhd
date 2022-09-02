@@ -36,7 +36,7 @@ entity Reg is
   clk : in std_logic; 
   en : in std_logic; 
   r_in : in std_logic_vector( 3 downto 0); 
-  r_out : out std_logic_vector(3 downto 0); -- ê·¸ëƒ¥ ì¶œë ¥
+  r_out : out std_logic_vector(3 downto 0); -- ±×³É Ãâ·Â
   s : in std_logic_vector(1 downto 0); --shift 
   s_out : out std_logic
   );
@@ -48,34 +48,37 @@ signal r : std_logic_vector(3 downto 0);
 
 begin
 
-	process(clk)
-	begin
-	if rising_edge(clk) then 
-		if en = '1' OR s = "11" then 
-		r <= r_in; 
-		
-		elsif s= "01" then 
-		
-		r(3) <= '0'; 
-		r(2) <= r(3); 
-		r(1) <= r(2); 
-		r(0) <= r(1); 
-		s_out <= r(0); 
-		
-		elsif s= "10" then 
-		
-		s_out <= r(3); 
-		r(3) <= r(2); 
-		r(2) <= r(1); 
-		r(1) <= r(0); 
-		r(0) <= '0'; 
-		 
-		else 
-		r <= r; 
-		end if; 
-	end if; 
-	
-	end process; 
-	
-	
+   process(clk)
+   begin
+   if rising_edge(clk) then 
+      if en = '1' then 
+      r <= r_in; 
+      end if; 
+      
+      
+      if en= '0' then 
+         if s= "01" then
+            r(3) <= '0'; 
+            r(2) <= r(3); 
+            r(1) <= r(2); 
+            r(0) <= r(1); 
+             
+         elsif s= "10" then 
+            
+            r(3) <= r(2); 
+            r(2) <= r(1); 
+            r(1) <= r(0); 
+            r(0) <= '0'; 
+         
+         else
+            r <= r; 
+         end if;  
+      end if; 
+   
+   end if; 
+   
+   end process; 
+      
+   r_out <= r;  
+   s_out <= r(3) when s="10" else r(0);
 end Behavioral;
