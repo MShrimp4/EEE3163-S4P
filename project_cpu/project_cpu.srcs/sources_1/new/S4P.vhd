@@ -31,31 +31,33 @@ entity S4P is
   m_clk : in std_logic; 
   IR_out : out std_logic_vector (3 downto 0); 
   
-   
   Ad_en : in STD_LOGIC; 
   Ad_sel : in STD_LOGIC_vector(1 downto 0); 
+  
   Dt_en : in STD_LOGIC; 
   Dt_dir : in STD_LOGIC; 
+  
   IR_en : in STD_LOGIC; 
   A_en : in STD_LOGIC; 
   B_en : in STD_LOGIC; 
   PH_en : in STD_LOGIC; 
   PL_en : in STD_LOGIC; 
-  cpc_en : in STD_LOGIC; 
   H_en : in STD_LOGIC; 
   L_en : in STD_LOGIC; 
+  AR1_en : in STD_LOGIC; 
+  AR0_en : in STD_LOGIC; 
+  cpc_en : in STD_LOGIC; 
+  
   C_en : in STD_LOGIC; 
   MC_sel : in STD_LOGIC; 
   Ci : in STD_LOGIC; 
   Z_en : in STD_LOGIC; 
   alufun : in STD_LOGIC_VECTOR (1 downto 0); 
+  
   Ro_sel : in STD_LOGIC_VECTOR (2 downto 0); 
-  CA_sel : in STD_LOGIC; 
-  Mmc_sel : in STD_LOGIC_VECTOR (2 downto 0); 
   AS1 : out STD_LOGIC; 
   AS0 : out STD_LOGIC; 
-  AR1_en : in STD_LOGIC; 
-  AR0_en : in STD_LOGIC; 
+ 
   Z_sel : in STD_LOGIC; 
   A_s_in : in std_logic_vector(1 downto 0); 
   
@@ -68,26 +70,22 @@ end S4P;
 
 architecture Behavioral of S4P is
 
+--register out 
+signal A_out, B_out, H_out, L_out, AR_0_out, AR_1_out : std_logic_vector(3 downto 0); 
+signal pc_out_8 : std_logic_vector (7 downto 0); 
+
+--1bit register  
+signal C_out, Z_out : std_logic; 
+signal mux_c_out, mux_z_out : std_logic; 
+
+--mux_idb 
 signal mux_out : std_logic_vector(3 downto 0); 
 
-signal A_out : std_logic_vector(3 downto 0); 
-signal B_out : std_logic_vector(3 downto 0); 
-signal C_out : std_logic; 
-signal H_out : std_logic_vector(3 downto 0); 
-signal L_out : std_logic_vector(3 downto 0); 
-signal Z_out : std_logic;  
-signal AR_0_out : std_logic_vector(3 downto 0); 
-signal AR_1_out : std_logic_vector(3 downto 0); 
-
-
-signal mux_c_out : std_logic; 
-signal mux_z_out : std_logic; 
-
+--ALU 
 signal Alu_F : std_logic_vector(3 downto 0); 
-signal Alu_Co : std_logic; 
-signal Alu_Z : std_logic; 
-signal pc_out_8 : std_logic_vector ( 7 downto 0); 
+signal Alu_Co, ALU_Z : std_logic; 
 
+ 
 signal cmp_out : std_logic; 
  
 signal Data_4 : std_logic_vector(3 downto 0); 
@@ -95,8 +93,6 @@ signal Data_4 : std_logic_vector(3 downto 0);
 signal Buffer_in_en : std_logic;
 signal Buffer_out_en : std_logic; 
  
-signal HL : std_logic_vector( 7 downto 0); 
-signal AR : std_logic_vector( 7 downto 0); 
 
 signal mux_add_out : std_logic_vector (7 downto 0); 
 
@@ -152,7 +148,7 @@ port map (
   clk => m_clk, 
   en => C_en, 
   r_in => mux_c_out, 
-  r_out => C_out
+  r_out => JC
 ); 
 
 Z : entity work.flp (Behavioral)
@@ -160,7 +156,7 @@ port map (
   clk => m_clk, 
   en => Z_en, 
   r_in => mux_z_out, 
-  r_out => Z_out
+  r_out => JZ
 ); 
 
 AR_0 : entity work.reg (Behavioral)
@@ -203,8 +199,10 @@ port map (
 mux_add_1 : entity work.mux_8 (Behavioral)
 port map (
    m_in_0 => pc_out_8, 
-   m_in_1 => HL, --(H_out & L_out),  
-   m_in_2 => AR, 
+   m_in_1(7 downto 4) => H_out,
+   m_in_1(3 downto 0) => L_out,
+   m_in_2(7 downto 4) => AR_1_out,
+   m_in_2(3 downto 0) => AR_0_out, 
    sel => ad_sel,  
    m_out => mux_add_out
 ); 
@@ -256,6 +254,7 @@ port map (
    Buffer_en => Buffer_in_en, 
    Data_out => Data_4
 ); 
+Buffer_in_en <= Dt_en and Dt_dir;  
 
 buf_out : entity work.buf_8 (Behavioral)
 port map(
@@ -263,21 +262,12 @@ port map(
    Buffer_en => Buffer_out_en, 
    Data_out => Data
 ); 
- 
-HL <= (H_out & L_out); 
-AR <= (AR_1_out & AR_0_out); 
-
-Buffer_in_en <= Dt_en and Dt_dir;  
 Buffer_out_en <= Dt_en and (not Dt_dir);  
-
-
-JZ <= '1' when Z_out = '1'; 
-JC <= '1' when C_out = '1'; 
 
 
 addr <= mux_add_out when ad_en = '1' 
     else "ZZZZZZZZ"; 
-
+	
 AR0_out <= AR_0_out; 
 
 end Behavioral;

@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7s100fgga676-2" LaunchTime="1662083455">
-  <File Type="PA-TCL" Name="cpu_project.tcl"/>
-  <File Type="RDS-PROPCONSTRS" Name="cpu_project_drc_synth.rpt"/>
-  <File Type="REPORTS-TCL" Name="cpu_project_reports.tcl"/>
-  <File Type="RDS-RDS" Name="cpu_project.vds"/>
-  <File Type="RDS-UTIL" Name="cpu_project_utilization_synth.rpt"/>
-  <File Type="RDS-UTIL-PB" Name="cpu_project_utilization_synth.pb"/>
-  <File Type="RDS-DCP" Name="cpu_project.dcp"/>
-  <File Type="VDS-TIMINGSUMMARY" Name="cpu_project_timing_summary_synth.rpt"/>
-  <File Type="VDS-TIMING-PB" Name="cpu_project_timing_summary_synth.pb"/>
+<GenRun Id="synth_1" LaunchPart="xc7s100fgga676-2" LaunchTime="1662178608">
+  <File Type="PA-TCL" Name="S4P.tcl"/>
+  <File Type="RDS-PROPCONSTRS" Name="S4P_drc_synth.rpt"/>
+  <File Type="REPORTS-TCL" Name="S4P_reports.tcl"/>
+  <File Type="RDS-RDS" Name="S4P.vds"/>
+  <File Type="RDS-UTIL" Name="S4P_utilization_synth.rpt"/>
+  <File Type="RDS-UTIL-PB" Name="S4P_utilization_synth.pb"/>
+  <File Type="RDS-DCP" Name="S4P.dcp"/>
+  <File Type="VDS-TIMINGSUMMARY" Name="S4P_timing_summary_synth.rpt"/>
+  <File Type="VDS-TIMING-PB" Name="S4P_timing_summary_synth.pb"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/imports/EEE3163-S4P/Reg.vhd">
       <FileInfo>
         <Attr Name="ImportPath" Val="$PPRDIR/../../../EEE3163-S4P/Reg.vhd"/>
         <Attr Name="ImportTime" Val="1656602026"/>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/new/S4P.vhd">
-      <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
@@ -45,12 +39,6 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PSRCDIR/sources_1/new/counter.vhd">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
     <File Path="$PSRCDIR/sources_1/imports/EEE3163-S4P/flp.vhd">
       <FileInfo>
         <Attr Name="ImportPath" Val="$PPRDIR/../../../EEE3163-S4P/flp.vhd"/>
@@ -59,34 +47,10 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PSRCDIR/sources_1/new/map_rom.vhd">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/new/mov_decoder.vhd">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
     <File Path="$PSRCDIR/sources_1/imports/EEE3163-S4P/mux.vhd">
       <FileInfo>
         <Attr Name="ImportPath" Val="$PPRDIR/../../../EEE3163-S4P/mux.vhd"/>
         <Attr Name="ImportTime" Val="1656602026"/>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/new/mux1_8.vhd">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/new/mux_6.vhd">
-      <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
@@ -113,6 +77,42 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
+    <File Path="$PSRCDIR/sources_1/new/S4P.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/counter.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/mux_6.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/mux1_8.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/map_rom.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/mov_decoder.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
     <File Path="$PSRCDIR/sources_1/new/uop_rom.vhd">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
@@ -129,7 +129,6 @@
     </File>
     <File Path="$PSRCDIR/sources_1/imports/EEE3163-S4P/buf.vhd">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="ImportPath" Val="$PPRDIR/../../../EEE3163-S4P/buf.vhd"/>
         <Attr Name="ImportTime" Val="1656602026"/>
         <Attr Name="UsedIn" Val="synthesis"/>
@@ -138,14 +137,12 @@
     </File>
     <File Path="$PSRCDIR/sources_1/new/adr_reg.vhd">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
     <File Path="$PSRCDIR/sources_1/imports/EEE3163-S4P/pc_cnt_test.vhd">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="ImportPath" Val="$PPRDIR/../../../EEE3163-S4P/pc_cnt_test.vhd"/>
         <Attr Name="ImportTime" Val="1656602026"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -153,7 +150,6 @@
     </File>
     <File Path="$PSRCDIR/sources_1/imports/EEE3163-S4P/reg_test.vhd">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="ImportPath" Val="$PPRDIR/../../../EEE3163-S4P/reg_test.vhd"/>
         <Attr Name="ImportTime" Val="1656602026"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -161,7 +157,6 @@
     </File>
     <File Path="$PSRCDIR/sources_1/imports/EEE3163-S4P/mux_test.vhd">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="ImportPath" Val="$PPRDIR/../../../EEE3163-S4P/mux_test.vhd"/>
         <Attr Name="ImportTime" Val="1656602026"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -169,7 +164,7 @@
     </File>
     <Config>
       <Option Name="DesignMode" Val="RTL"/>
-      <Option Name="TopModule" Val="cpu_project"/>
+      <Option Name="TopModule" Val="S4P"/>
       <Option Name="TopAutoSet" Val="TRUE"/>
     </Config>
   </FileSet>
@@ -180,7 +175,9 @@
     </Config>
   </FileSet>
   <Strategy Version="1" Minor="2">
-    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2018"/>
+    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2018">
+      <Desc>Vivado Synthesis Defaults</Desc>
+    </StratHandle>
     <Step Id="synth_design"/>
   </Strategy>
 </GenRun>
