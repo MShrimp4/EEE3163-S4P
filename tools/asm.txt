@@ -1,5 +1,3 @@
-ORG 10H
-
 MVI A, 5H
 MOV B,A
 MOV A,80H

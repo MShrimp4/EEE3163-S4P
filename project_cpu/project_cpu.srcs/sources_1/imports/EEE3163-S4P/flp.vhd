@@ -43,7 +43,7 @@ end flp;
 
 architecture Behavioral of flp is
 
-signal r : std_logic;  
+signal r : std_logic := '0';  
 
 begin
 

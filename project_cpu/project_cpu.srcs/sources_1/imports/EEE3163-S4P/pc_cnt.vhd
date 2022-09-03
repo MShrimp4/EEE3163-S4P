@@ -34,9 +34,9 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity pc_cnt is
   Port ( 
-  clk : in std_logic; 
-  PH_en : in std_logic := '0'; 
-  PL_en : in std_logic := '0'; 
+  clk : in std_logic;
+  PH_en : in std_logic; 
+  PL_en : in std_logic; 
   PH : in std_logic_vector(3 downto 0); 
   PL : in std_logic_vector(3 downto 0); 
   c_en : in std_logic :='0'; 
@@ -53,35 +53,17 @@ signal p_sig : std_logic_vector(7 downto 0);
 begin
 	process(clk)
 	begin
-	if rising_edge(clk) then 
-		
-		--if clr = '1' then 
-		
-		if pl_en = '1' then 
-		pl_sig <= pl;
-		
-		elsif ph_en = '1' then 
-		ph_sig <= pl; 
-		--end if; 
-		
-		--if ph_en = '1' then 
-		--ph_sig <= ph; 
-		end if; 
-		
-		
-		
-		if c_en = '1' then 
-		pl_sig <= pl_sig + 1; 
-			if pl_sig = "1111" then 
-			ph_sig <= ph_sig + 1; 
-			end if; 
-		end if; 
-		
-		--else 
-		--ph_sig <= "0000"; 
-		--pl_sig <= "0000"; 
-		
-		--end if; 
+	if rising_edge(clk) then
+	   if pl_en = '1' then 
+		  pl_sig <= pl;
+	   elsif ph_en = '1' then 
+		  ph_sig <= pl; 
+	   elsif c_en = '1' then 
+		  pl_sig <= pl_sig + 1; 
+		  if pl_sig = "1111" then 
+		      ph_sig <= ph_sig + 1; 
+		  end if; 
+	   end if; 
 			
 	end if; 
 	

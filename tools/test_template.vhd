@@ -18,7 +18,7 @@ architecture Behavioral of cpu_test is
 begin
   clk  <= not clk  after clk_period/2;
 
-  ram : entry work.RAM (Behavioral)
+  ram : entity work.RAM (Behavioral)
     port map(
       clk=>  clk,
       data=> data,

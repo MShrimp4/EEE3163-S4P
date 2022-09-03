@@ -48,22 +48,17 @@ end alu;
 
 architecture Behavioral of alu is
 
-begin
-
-process 
 begin 
 
-end process; 
-
-F <= a+b+Ci when alufun = "10"; 
-F <= a-b when alufun = "11"; 
+F <= a+b+Ci when alufun = "10"
+else a-b when alufun = "11"
+else (others=>'0'); 
 
 Co <= '1' when (alufun= "10" and A(3)='1' and B(3)= '1') or
 	(alufun = "10" and A(3)='1' and F(3)= '1') or 
 	(alufun = "10" and B(3)='1' and F(3)= '1')
-	
-	; 
+	else '0'; 
 
-Z <= '1' when alufun= "11" and F(3)= '0'; 
+Z <= '1' when alufun= "11" and F(3)= '0' else '0'; 
 
 end Behavioral;

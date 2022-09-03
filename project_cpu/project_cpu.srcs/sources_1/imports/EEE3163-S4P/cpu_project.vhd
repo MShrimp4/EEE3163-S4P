@@ -61,8 +61,8 @@ begin
 
 NJZ <= not JZ;
 NRST <= not reset;
-NOT_MMC_out <= not MMC_out;
-mux_mc : entity work.mux1_8 (Behavioral)
+mux_mc : entity work.mux1_to_n (Behavioral)
+generic map (m_len => 8, s_len => 3)
 port map (
   m_in(0) => '0',  
   m_in(1) => '1', 
@@ -85,12 +85,13 @@ port map (
 
 mux_ca : entity work.mux_6 (Behavioral) 
     port map ( 
-	m_in_0 => MIR_out, 
-	m_in_1 => Next_add,
+	m_in_0 => Next_add, 
+	m_in_1 => MIR_out,
 	sel => CA_sel,
 	m_out => CAR_next_addr
 	); 
 
+NOT_MMC_out <= not MMC_out;
 CAR : entity work.counter (Behavioral)
 port map (
 	m_clk => m_clk,
@@ -107,26 +108,26 @@ port map (
 	mov_en =>    dec_en
 	); 
 
-IR_en <= dec_en(0) when Mov_mux_en = '1'
+IR_en <= dec_en(8) when Mov_mux_en = '1'
     else IR_en_0;
-A_en  <= dec_en(1) when Mov_mux_en = '1'
+A_en  <= dec_en(7) when Mov_mux_en = '1'
     else A_en_0;
-B_en  <= dec_en(2) when Mov_mux_en = '1'
+B_en  <= dec_en(6) when Mov_mux_en = '1'
     else B_en_0;
-PH_en <= dec_en(3) when Mov_mux_en = '1'
+PH_en <= dec_en(5) when Mov_mux_en = '1'
     else PH_en_0;
 PL_en <= dec_en(4) when Mov_mux_en = '1'
     else PL_en_0;
-H_en  <= dec_en(5) when Mov_mux_en = '1'
+H_en  <= dec_en(3) when Mov_mux_en = '1'
     else H_en_0;
-L_en  <= dec_en(6) when Mov_mux_en = '1'
+L_en  <= dec_en(2) when Mov_mux_en = '1'
     else L_en_0;
-AR1_en<= dec_en(7) when Mov_mux_en = '1'
+AR1_en<= dec_en(1) when Mov_mux_en = '1'
     else AR1_en_0;
-AR0_en<= dec_en(8) when Mov_mux_en = '1'
+AR0_en<= dec_en(0) when Mov_mux_en = '1'
     else AR0_en_0;
 
-Ro_sel <= dec_sel when Mov_mux_en = '1' else Ro_sel_0;
+Ro_sel <= dec_sel when Mov_mux_sel = '1' else Ro_sel_0;
 
 control_rom : entity work.uop_rom (Behavioral)
 port map (
@@ -168,7 +169,7 @@ S4p_comp : entity work.S4P (Behavioral)
 port map (
   Data => Data, 
   addr => addr,
-  m_clk => m_clk, 
+  m_clk => m_clk,
   IR_out => Op_code,  
   
   Ad_en=> Ad_en,
@@ -190,8 +191,6 @@ port map (
   Z_en => Z_en,  
   alufun => alufun, 
   Ro_sel => Ro_sel, 
-  CA_sel =>CA_sel,
-  Mmc_sel => Mmc_sel,
   AR1_en =>AR1_en, 
   AR0_en =>AR0_en, 
   Z_sel => Z_sel,

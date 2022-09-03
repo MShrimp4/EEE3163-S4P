@@ -131,7 +131,11 @@ with open("asm.txt") as f:
         args = [match.group(3), match.group(4), match.group(6)]
 
         if args[0] == "ORG":
-            pc = fromhex(args[1])
+            new_pc = fromhex(args[1])
+            if pc > new_pc:
+                raise "PC error"
+            asm_lst = asm_lst + [0] * (new_pc - pc)
+            pc = new_pc
             continue
         new_asm = dispatch (args)
         print ("%d : %s ==> %s" %(pc, str(args), str(new_asm)))
@@ -163,7 +167,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity RAM is
-  port map(
+  port(
     clk : in STD_LOGIC;
     
     data : inout STD_LOGIC_VECTOR(3 downto 0);
@@ -200,7 +204,7 @@ from rom_ram import *
 ram_dict = dict()
 for i in range(4):
     ram_dict[rom_name("data",i)] = "".join(['0']*(2**8-len(word_lst)) + [e[3-i] for e in word_lst][::-1])
-sig_lst   = "\n".join(gen_rom_define(name,data,8) for name,data in ram_dict.items())
+sig_lst   = "\n".join(gen_rom_define(name,data,(2**8)) for name,data in ram_dict.items())
 read_lst  = gen_code_lookup("addr", "data", 4, "out_buf")
 write_lst = gen_code_assign("addr", "data", 4)
 

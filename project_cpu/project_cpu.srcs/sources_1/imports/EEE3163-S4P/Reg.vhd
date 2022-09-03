@@ -44,7 +44,7 @@ end Reg;
 
 architecture Behavioral of Reg is
 
-signal r : std_logic_vector(3 downto 0); 
+signal r : std_logic_vector(3 downto 0) := (others => '0'); 
 
 begin
 

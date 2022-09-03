@@ -28,7 +28,7 @@ entity S4P is
  Port ( 
   Data : inout std_logic_vector(3 downto 0); 
   addr : out std_logic_vector(7 downto 0); 
-  m_clk : in std_logic; 
+  m_clk : in std_logic;
   IR_out : out std_logic_vector (3 downto 0); 
   
   Ad_en : in STD_LOGIC; 
@@ -55,8 +55,6 @@ entity S4P is
   alufun : in STD_LOGIC_VECTOR (1 downto 0); 
   
   Ro_sel : in STD_LOGIC_VECTOR (2 downto 0); 
-  AS1 : out STD_LOGIC; 
-  AS0 : out STD_LOGIC; 
  
   Z_sel : in STD_LOGIC; 
   A_s_in : in std_logic_vector(1 downto 0); 
@@ -74,8 +72,7 @@ architecture Behavioral of S4P is
 signal A_out, B_out, H_out, L_out, AR_0_out, AR_1_out : std_logic_vector(3 downto 0); 
 signal pc_out_8 : std_logic_vector (7 downto 0); 
 
---1bit register  
-signal C_out, Z_out : std_logic; 
+--1bit register  ; 
 signal mux_c_out, mux_z_out : std_logic; 
 
 --mux_idb 
@@ -224,7 +221,7 @@ port map(
 
 pc_cnt_1 : entity work.pc_cnt (Behavioral)
 port map( 
-  clk => m_clk, 
+  clk => m_clk,
   PH_en => ph_en, 
   PL_en => pl_en, 
   PH => mux_out, 
