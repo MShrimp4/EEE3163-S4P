@@ -155,4 +155,53 @@ with open("asm.txt") as f:
         word_lst.append (format(bit, '04b'))
     print(word_lst)
 
+
+template = """
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity RAM is
+  port map(
+    clk : in STD_LOGIC;
     
+    data : inout STD_LOGIC_VECTOR(3 downto 0);
+    addr : in    STD_LOGIC_VECTOR(7 downto 0);
+    
+    RD : in STD_LOGIC;
+    WR : in STD_LOGIC
+    );
+end RAM;
+
+architecture Behavioral of RAM is
+  {SIGNAL_LIST}
+
+  signal out_buf : STD_LOGIC_VECTOR(3 downto 0) := (others=>'0');
+begin
+  process (clk)
+  begin
+    if rising_edge(clk) then
+      if RD = '1' then
+        {READ_LIST}
+      elsif WR = '1' then
+        {WRITE_LIST}
+      end if;
+    end if;
+  end process;
+
+  data <= out_buf when RD = '1' else (others=>'Z');
+end Behavioral;
+
+"""
+
+from rom_ram import *
+
+ram_dict = dict()
+for i in range(4):
+    ram_dict[rom_name("data",i)] = "".join(['0']*(2**8-len(word_lst)) + [e[3-i] for e in word_lst][::-1])
+sig_lst   = "\n".join(gen_rom_define(name,data,8) for name,data in ram_dict.items())
+read_lst  = gen_code_lookup("addr", "data", 4, "out_buf")
+write_lst = gen_code_assign("addr", "data", 4)
+
+print(template.format(SIGNAL_LIST=sig_lst,READ_LIST=read_lst,WRITE_LIST=write_lst))
