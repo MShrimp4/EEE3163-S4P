@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenRun Id="impl_1" LaunchPart="xc7s100fgga676-2" LaunchTime="1662178608">
+  <File Type="BITSTR-BMM" Name="S4P_bd.bmm"/>
+  <File Type="OPT-METHODOLOGY-DRC" Name="S4P_methodology_drc_opted.rpt"/>
+  <File Type="INIT-TIMING" Name="S4P_timing_summary_init.rpt"/>
+  <File Type="ROUTE-PWR" Name="S4P_power_routed.rpt"/>
+  <File Type="PA-TCL" Name="S4P.tcl"/>
+  <File Type="OPT-TIMING" Name="S4P_timing_summary_opted.rpt"/>
+  <File Type="OPT-DCP" Name="S4P_opt.dcp"/>
+  <File Type="ROUTE-PWR-SUM" Name="S4P_power_summary_routed.pb"/>
+  <File Type="REPORTS-TCL" Name="S4P_reports.tcl"/>
+  <File Type="OPT-DRC" Name="S4P_drc_opted.rpt"/>
+  <File Type="OPT-HWDEF" Name="S4P.hwdef"/>
+  <File Type="PWROPT-DCP" Name="S4P_pwropt.dcp"/>
+  <File Type="PWROPT-DRC" Name="S4P_drc_pwropted.rpt"/>
+  <File Type="PWROPT-TIMING" Name="S4P_timing_summary_pwropted.rpt"/>
+  <File Type="PLACE-DCP" Name="S4P_placed.dcp"/>
+  <File Type="PLACE-IO" Name="S4P_io_placed.rpt"/>
+  <File Type="PLACE-CLK" Name="S4P_clock_utilization_placed.rpt"/>
+  <File Type="PLACE-UTIL" Name="S4P_utilization_placed.rpt"/>
+  <File Type="PLACE-UTIL-PB" Name="S4P_utilization_placed.pb"/>
+  <File Type="PLACE-CTRL" Name="S4P_control_sets_placed.rpt"/>
+  <File Type="PLACE-SIMILARITY" Name="S4P_incremental_reuse_placed.rpt"/>
+  <File Type="PLACE-PRE-SIMILARITY" Name="S4P_incremental_reuse_pre_placed.rpt"/>
+  <File Type="BG-BGN" Name="S4P.bgn"/>
+  <File Type="PLACE-TIMING" Name="S4P_timing_summary_placed.rpt"/>
+  <File Type="POSTPLACE-PWROPT-DCP" Name="S4P_postplace_pwropt.dcp"/>
+  <File Type="BG-BIN" Name="S4P.bin"/>
+  <File Type="POSTPLACE-PWROPT-TIMING" Name="S4P_timing_summary_postplace_pwropted.rpt"/>
+  <File Type="PHYSOPT-DCP" Name="S4P_physopt.dcp"/>
+  <File Type="PHYSOPT-DRC" Name="S4P_drc_physopted.rpt"/>
+  <File Type="BITSTR-MSK" Name="S4P.msk"/>
+  <File Type="PHYSOPT-TIMING" Name="S4P_timing_summary_physopted.rpt"/>
+  <File Type="ROUTE-ERROR-DCP" Name="S4P_routed_error.dcp"/>
+  <File Type="ROUTE-DCP" Name="S4P_routed.dcp"/>
+  <File Type="ROUTE-BLACKBOX-DCP" Name="S4P_routed_bb.dcp"/>
+  <File Type="ROUTE-DRC" Name="S4P_drc_routed.rpt"/>
+  <File Type="ROUTE-DRC-PB" Name="S4P_drc_routed.pb"/>
+  <File Type="BITSTR-LTX" Name="debug_nets.ltx"/>
+  <File Type="BITSTR-LTX" Name="S4P.ltx"/>
+  <File Type="ROUTE-DRC-RPX" Name="S4P_drc_routed.rpx"/>
+  <File Type="BITSTR-MMI" Name="S4P.mmi"/>
+  <File Type="ROUTE-METHODOLOGY-DRC" Name="S4P_methodology_drc_routed.rpt"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="S4P_methodology_drc_routed.rpx"/>
+  <File Type="BITSTR-SYSDEF" Name="S4P.sysdef"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="S4P_methodology_drc_routed.pb"/>
+  <File Type="ROUTE-PWR-RPX" Name="S4P_power_routed.rpx"/>
+  <File Type="ROUTE-STATUS" Name="S4P_route_status.rpt"/>
+  <File Type="ROUTE-STATUS-PB" Name="S4P_route_status.pb"/>
+  <File Type="ROUTE-TIMINGSUMMARY" Name="S4P_timing_summary_routed.rpt"/>
+  <File Type="ROUTE-TIMING-PB" Name="S4P_timing_summary_routed.pb"/>
+  <File Type="ROUTE-TIMING-RPX" Name="S4P_timing_summary_routed.rpx"/>
+  <File Type="ROUTE-SIMILARITY" Name="S4P_incremental_reuse_routed.rpt"/>
+  <File Type="ROUTE-CLK" Name="S4P_clock_utilization_routed.rpt"/>
+  <File Type="ROUTE-BUS-SKEW" Name="S4P_bus_skew_routed.rpt"/>
+  <File Type="ROUTE-BUS-SKEW-PB" Name="S4P_bus_skew_routed.pb"/>
+  <File Type="ROUTE-BUS-SKEW-RPX" Name="S4P_bus_skew_routed.rpx"/>
+  <File Type="POSTROUTE-PHYSOPT-DCP" Name="S4P_postroute_physopt.dcp"/>
+  <File Type="POSTROUTE-PHYSOPT-BLACKBOX-DCP" Name="S4P_postroute_physopt_bb.dcp"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING" Name="S4P_timing_summary_postroute_physopted.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-PB" Name="S4P_timing_summary_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-RPX" Name="S4P_timing_summary_postroute_physopted.rpx"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW" Name="S4P_bus_skew_postroute_physopted.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-PB" Name="S4P_bus_skew_postroute_physopted.pb"/>
+  <File Type="BG-BIT" Name="S4P.bit"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-RPX" Name="S4P_bus_skew_postroute_physopted.rpx"/>
+  <File Type="BITSTR-RBT" Name="S4P.rbt"/>
+  <File Type="BITSTR-NKY" Name="S4P.nky"/>
+  <File Type="BG-DRC" Name="S4P.drc"/>
+  <File Type="RDI-RDI" Name="S4P.vdi"/>
+  <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
+  <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
+    <Filter Type="Srcs"/>
+    <File Path="$PSRCDIR/sources_1/imports/EEE3163-S4P/Reg.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../EEE3163-S4P/Reg.vhd"/>
+        <Attr Name="ImportTime" Val="1656602026"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/EEE3163-S4P/alu.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../EEE3163-S4P/alu.vhd"/>
+        <Attr Name="ImportTime" Val="1656602026"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/buf_8.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/cmp.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/EEE3163-S4P/flp.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../EEE3163-S4P/flp.vhd"/>
+        <Attr Name="ImportTime" Val="1656602026"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/EEE3163-S4P/mux.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../EEE3163-S4P/mux.vhd"/>
+        <Attr Name="ImportTime" Val="1656602026"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/mux_8.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/EEE3163-S4P/mux_idb.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../EEE3163-S4P/mux_idb.vhd"/>
+        <Attr Name="ImportTime" Val="1656602026"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/EEE3163-S4P/pc_cnt.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../EEE3163-S4P/pc_cnt.vhd"/>
+        <Attr Name="ImportTime" Val="1656602026"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/S4P.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/counter.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/mux_6.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/mux1_8.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/map_rom.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/mov_decoder.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/uop_rom.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/EEE3163-S4P/cpu_project.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../EEE3163-S4P/cpu_project.vhd"/>
+        <Attr Name="ImportTime" Val="1656602026"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/EEE3163-S4P/buf.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../EEE3163-S4P/buf.vhd"/>
+        <Attr Name="ImportTime" Val="1656602026"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/adr_reg.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/EEE3163-S4P/pc_cnt_test.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../EEE3163-S4P/pc_cnt_test.vhd"/>
+        <Attr Name="ImportTime" Val="1656602026"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/EEE3163-S4P/reg_test.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../EEE3163-S4P/reg_test.vhd"/>
+        <Attr Name="ImportTime" Val="1656602026"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/EEE3163-S4P/mux_test.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../EEE3163-S4P/mux_test.vhd"/>
+        <Attr Name="ImportTime" Val="1656602026"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="DesignMode" Val="RTL"/>
+      <Option Name="TopModule" Val="S4P"/>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1">
+    <Filter Type="Constrs"/>
+    <Config>
+      <Option Name="ConstrsType" Val="XDC"/>
+    </Config>
+  </FileSet>
+  <Strategy Version="1" Minor="2">
+    <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2018">
+      <Desc>Default settings for Implementation.</Desc>
+    </StratHandle>
+    <Step Id="init_design"/>
+    <Step Id="opt_design"/>
+    <Step Id="power_opt_design"/>
+    <Step Id="place_design"/>
+    <Step Id="post_place_power_opt_design"/>
+    <Step Id="phys_opt_design"/>
+    <Step Id="route_design"/>
+    <Step Id="post_route_phys_opt_design"/>
+    <Step Id="write_bitstream"/>
+  </Strategy>
+</GenRun>
